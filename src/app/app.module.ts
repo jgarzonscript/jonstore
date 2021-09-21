@@ -7,9 +7,10 @@ import { ProductsComponent } from "./products/products.component";
 import { ProductItemComponent } from "./products/product-item/product-item.component";
 
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { NavbarComponent } from './products/navbar/navbar.component';
 
 @NgModule({
-    declarations: [AppComponent, ProductsComponent, ProductItemComponent],
+    declarations: [AppComponent, ProductsComponent, ProductItemComponent, NavbarComponent],
     imports: [BrowserModule, AppRoutingModule, FlexLayoutModule],
     providers: [],
     bootstrap: [AppComponent]
