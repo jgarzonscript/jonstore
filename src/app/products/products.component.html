@@ -1,10 +1,12 @@
 <header>
-    <nav>
-        <!-- <navbar></navbar> -->
-    </nav>
+    <navbar></navbar>
 </header>
 
-<div fxLayout="row wrap" fxLayoutAlign="space-evenly center">
+<div
+    fxLayout="row wrap"
+    fxLayoutAlign="space-evenly center"
+    class="product-container"
+>
     <product-item
         *ngFor="let aproduct of products"
         [product]="aproduct"
