@@ -9,10 +9,23 @@ export class Product implements Deserializable {
         public category_id?: number,
         // readonly seen?: number,
         public id?: number
-    ) {}
+    ) {
+        if (this.isNumeric(category_id)) {
+            this.category_id = parseInt(String(category_id));
+        }
+    }
 
     deserialize(input: any) {
         Object.assign(this, input);
         return this;
+    }
+
+    /**
+     * checks and validates the existence of a number
+     * @param val string | null | undefined
+     * @returns
+     */
+    private isNumeric(val: any) {
+        return /^-?[0-9]+$/.test(String(val));
     }
 }
