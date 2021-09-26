@@ -9,6 +9,7 @@ import { NavbarComponent } from "./products/navbar/navbar.component";
 
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { HttpClientModule } from "@angular/common/http";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -21,7 +22,8 @@ import { HttpClientModule } from "@angular/common/http";
         BrowserModule,
         AppRoutingModule,
         FlexLayoutModule,
-        HttpClientModule
+        HttpClientModule,
+        FormsModule
     ],
     providers: [],
     bootstrap: [AppComponent]
