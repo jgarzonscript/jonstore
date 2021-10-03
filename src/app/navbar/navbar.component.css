@@ -1,0 +1,37 @@
+.unavbar {
+    background: #33b5e5;
+    color: #fff;
+    padding-bottom: 10px;
+}
+
+a {
+    color: #ffffff;
+}
+
+.unavbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* align-items: center; */
+}
+
+.unavbar > .element:first-child {
+    margin-right: auto;
+    visibility: hidden;
+    padding: 0 20px;
+}
+.unavbar > .element:last-child {
+    margin-left: auto;
+    padding: 0 20px;
+    align-self: flex-end;
+}
+
+/* column div */
+
+#column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 10px;
+}

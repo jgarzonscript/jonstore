@@ -5,3 +5,12 @@ img.product-image {
     margin: 6px 6px;
     border: 1px solid #33b5e5;
 }
+
+.item {
+    padding: 7px;
+}
+
+.select-input {
+    width: 100%;
+    /* margin-bottom: 8px; */
+}

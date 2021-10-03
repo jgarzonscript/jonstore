@@ -1,1 +1,25 @@
 <img src="{{ product.url }}" alt="" class="product-image" />
+<div class="item">{{ product.name }}</div>
+<div class="item">{{ product.price / 100 | currency }}</div>
+<form #addform="ngForm">
+    <div class="item">
+        <select
+            #qty
+            name="qantity"
+            [(ngModel)]="quantitySelected"
+            class="select-input"
+        >
+            <option *ngFor="let i of data" [ngValue]="i" [selected]="2">
+                {{ i }}
+            </option>
+        </select>
+    </div>
+    <div class="item">
+        <input
+            type="button"
+            value="Add to cart"
+            class="btn btn-primary btn-sm"
+            (click)="submit()"
+        />
+    </div>
+</form>
