@@ -11,6 +11,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { LoginPageComponent } from './login-page/login-page.component';
+import { LoginComponent } from './login-page/login/login.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import { LoginPageComponent } from './login-page/login-page.component';
         ProductsComponent,
         ProductItemComponent,
         NavbarComponent,
-        LoginPageComponent
+        LoginPageComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule,
