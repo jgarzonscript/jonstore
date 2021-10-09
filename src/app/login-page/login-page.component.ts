@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 
 @Component({
     selector: "login-page",
@@ -6,7 +7,11 @@ import { Component, OnInit } from "@angular/core";
     styleUrls: ["./login-page.component.css"]
 })
 export class LoginPageComponent implements OnInit {
-    constructor() {}
+    constructor(private router: Router) {}
 
     ngOnInit(): void {}
+
+    loginSubmitted(data: object): void {
+        console.log(data);
+    }
 }

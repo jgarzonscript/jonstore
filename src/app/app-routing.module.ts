@@ -18,10 +18,20 @@ const routes: Routes = [
             }
         ]
     }
+    // {
+    //     path: "login/:id",
+    //     component: LoginPageComponent,
+    //     children: [
+    //         {
+    //             path: "",
+    //             component: LoginComponent
+    //         }
+    //     ]
+    // }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: "reload" })],
     exports: [RouterModule]
 })
 export class AppRoutingModule {}

@@ -1,1 +1,53 @@
-<p>login works!</p>
+<form #f="ngForm" (ngSubmit)="onSubmit()">
+    <div class="card logincard">
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="inputEmail" class="form-label">Username</label>
+                <input
+                    type="email"
+                    class="form-control"
+                    id="inputEmail"
+                    aria-describedby="emailHelp"
+                    [(ngModel)]="_inputEmail"
+                    name="email"
+                    #email="ngModel"
+                    required
+                />
+                <!-- <div id="emailHelp" class="form-text"></div> -->
+                <small id="emailHelpBlock" class="form-text loginvalidation">
+                    <div *ngIf="email.invalid && email.dirty">
+                        <div *ngIf="email.errors?.required">
+                            this is required
+                        </div>
+                    </div>
+                </small>
+            </div>
+            <div class="mb-3">
+                <label for="inputPass" class="form-label">Password</label>
+                <input
+                    type="password"
+                    class="form-control"
+                    id="inputPass"
+                    [(ngModel)]="_inputPass"
+                    name="pass"
+                    #pass="ngModel"
+                    required
+                />
+                <small id="passHelpBlock" class="form-text loginvalidation">
+                    <div *ngIf="pass.invalid && pass.dirty">
+                        <div *ngIf="pass.errors?.required">
+                            this is required
+                        </div>
+                    </div>
+                </small>
+            </div>
+            <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="f.invalid"
+            >
+                Login
+            </button>
+        </div>
+    </div>
+</form>

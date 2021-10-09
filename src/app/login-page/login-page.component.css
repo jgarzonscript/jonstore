@@ -1,0 +1,6 @@
+.loginpagecontainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: Flex-start;
+    align-items: center;
+}
