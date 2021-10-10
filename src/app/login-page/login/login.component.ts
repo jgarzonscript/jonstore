@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
     ngOnInit(): void {}
 
     onSubmit(): void {
-        const data = { email: this._inputEmail, pass: this._inputPass };
+        const data = { username: this._inputEmail, password: this._inputPass };
         this.loginData.emit(data);
         // this.router.navigate(["login", 333]);
         // console.log("submit clicked");

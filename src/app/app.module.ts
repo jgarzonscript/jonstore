@@ -10,8 +10,11 @@ import { NavbarComponent } from "./navbar/navbar.component";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
-import { LoginPageComponent } from './login-page/login-page.component';
-import { LoginComponent } from './login-page/login/login.component';
+import { LoginPageComponent } from "./login-page/login-page.component";
+import { LoginComponent } from "./login-page/login/login.component";
+
+import { Config } from "./shared/utilities/config";
+import { Auth } from "./shared/services/auth";
 
 @NgModule({
     declarations: [
@@ -29,7 +32,7 @@ import { LoginComponent } from './login-page/login/login.component';
         HttpClientModule,
         FormsModule
     ],
-    providers: [],
+    providers: [Config, Auth],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
