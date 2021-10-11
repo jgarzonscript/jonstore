@@ -10,24 +10,14 @@ const routes: Routes = [
     { path: "", component: ProductsComponent },
     {
         path: "login",
-        component: LoginPageComponent,
-        children: [
-            {
-                path: "",
-                component: LoginComponent
-            }
-        ]
+        component: LoginPageComponent
+        // children: [
+        //     {
+        //         path: "",
+        //         component: LoginComponent
+        //     }
+        // ]
     }
-    // {
-    //     path: "login/:id",
-    //     component: LoginPageComponent,
-    //     children: [
-    //         {
-    //             path: "",
-    //             component: LoginComponent
-    //         }
-    //     ]
-    // }
 ];
 
 @NgModule({
