@@ -1,5 +1,6 @@
 <form #f="ngForm" (ngSubmit)="onSubmit()">
     <div class="card logincard">
+        <div class="card-header">Sign In</div>
         <div class="card-body">
             <div class="mb-3">
                 <label for="inputEmail" class="form-label">Username</label>
@@ -13,12 +14,9 @@
                     #email="ngModel"
                     required
                 />
-                <!-- <div id="emailHelp" class="form-text"></div> -->
                 <small id="emailHelpBlock" class="form-text loginvalidation">
                     <div *ngIf="email.invalid && email.dirty">
-                        <div *ngIf="email.errors?.required">
-                            this is required
-                        </div>
+                        <div *ngIf="email.errors?.required">this is required</div>
                     </div>
                 </small>
             </div>
@@ -35,17 +33,11 @@
                 />
                 <small id="passHelpBlock" class="form-text loginvalidation">
                     <div *ngIf="pass.invalid && pass.dirty">
-                        <div *ngIf="pass.errors?.required">
-                            this is required
-                        </div>
+                        <div *ngIf="pass.errors?.required">this is required</div>
                     </div>
                 </small>
             </div>
-            <button
-                type="submit"
-                class="btn btn-primary"
-                [disabled]="f.invalid"
-            >
+            <button type="submit" class="btn btn-primary" [disabled]="f.invalid">
                 Login
             </button>
         </div>

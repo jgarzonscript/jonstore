@@ -10,7 +10,12 @@
 <!-- <div><a href="#">login</a></div> -->
 
 <div class="unavbar">
-    <div class="element"><a href="#">login</a></div>
+    <div class="element">
+        <a *ngIf="loggedInUser.length == 0" href="#">login</a>
+        <span *ngIf="loggedInUser"
+            ><span style="font-style: italic">{{ loggedInUser }}</span> is signed in</span
+        >
+    </div>
     <div class="element" id="column">
         <h1>Jon's Store</h1>
         <div fxLayout="row" fxLayoutGap="12px">
@@ -18,5 +23,10 @@
             <a href="#">Cart</a>
         </div>
     </div>
-    <div class="element"><a routerLink="/login">login</a></div>
+    <div class="element">
+        <a *ngIf="loggedInUser.length == 0" #lnkLogin routerLink="/login">login</a>
+        <span *ngIf="loggedInUser"
+            ><span style="font-style: italic">{{ loggedInUser }}</span> is signed in</span
+        >
+    </div>
 </div>

@@ -1,4 +1,4 @@
-import { Observable, of } from "rxjs";
+import { Observable, of, BehaviorSubject } from "rxjs";
 import { Injectable } from "@angular/core";
 import { User } from "../utilities/config";
 
@@ -7,9 +7,13 @@ export class Auth {
     private readonly JWT_TOKEN = "JWT_TOKEN";
     private loggedUserToken = "";
 
+    public isUserLoggedIn: BehaviorSubject<boolean> =
+        new BehaviorSubject<boolean>(false);
+
     doLoginUser(token: string): void {
         // localStorage.setItem(this.JWT_TOKEN, token);
         this.loggedUserToken = token;
+        this.isUserLoggedIn.next(true);
     }
 
     doLogoutUser(): void {

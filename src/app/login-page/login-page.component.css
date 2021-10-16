@@ -3,4 +3,42 @@
     flex-direction: column;
     justify-content: Flex-start;
     align-items: center;
+    position: relative;
+}
+
+.signinguserindiv {
+    /* background-color: #cccc; */
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    background-color: rgba(248, 248, 248, 0.9);
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+#signinguserincontainer {
+    height: 100px;
+    width: 100vw;
+    padding: 20px;
+
+    /* flex stuff */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* font-family: 'Noto Sans Mono', monospace; */
+#signinguserincontainer > h1 {
+    font-family: "Noto Sans Mono", monospace;
+}
+
+#blanket {
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.75);
+    position: absolute;
+    width: 20rem;
+    height: 317px;
 }

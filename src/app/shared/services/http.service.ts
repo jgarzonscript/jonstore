@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
-import { HttpClient } from "@angular/common/http";
-import { map, tap } from "rxjs/operators";
+import { Observable, of, throwError, BehaviorSubject } from "rxjs";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { map, tap, catchError } from "rxjs/operators";
 
 import { Product } from "../models/product.model";
 import { Auth } from "./auth";
@@ -16,6 +16,14 @@ export class HttpService {
         private auth: Auth,
         private config: Config
     ) {}
+
+    private handleError(error: HttpErrorResponse) {
+        console.error(
+            `Backend returned code ${error.status}, body was: `,
+            error.error
+        );
+        return throwError(error.error.message);
+    }
 
     getProducts(): Observable<Product[]> {
         return this.http.get<[]>("http://localhost:3000/products").pipe(
@@ -43,10 +51,21 @@ export class HttpService {
                 `${this.config.apiUrl}/users/authenticate`,
                 loginRequest
             )
-            .pipe(tap((data) => this.auth.doLoginUser(data?.data)));
+            .pipe(
+                tap((data) => this.auth.doLoginUser(data?.data)),
+                catchError(this.handleError)
+            );
     }
 
     getCurrentUser$(): Observable<User | undefined> {
         return this.auth.getCurrentUser();
+    }
+
+    isLoggedIn$(): BehaviorSubject<boolean> {
+        // return this.auth.getCurrentUser().pipe(
+        //     map((user) => !!user),
+        //     catchError(() => of(false))
+        // );
+        return this.auth.isUserLoggedIn;
     }
 }
