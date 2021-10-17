@@ -11,17 +11,10 @@ import { Config, LoginRequest, apiResponse, User } from "../utilities/config";
     providedIn: "root"
 })
 export class HttpService {
-    constructor(
-        private http: HttpClient,
-        private auth: Auth,
-        private config: Config
-    ) {}
+    constructor(private http: HttpClient, private auth: Auth, private config: Config) {}
 
     private handleError(error: HttpErrorResponse) {
-        console.error(
-            `Backend returned code ${error.status}, body was: `,
-            error.error
-        );
+        console.error(`Backend returned code ${error.status}, body was: `, error.error);
         return throwError(error.error.message);
     }
 
@@ -47,17 +40,14 @@ export class HttpService {
 
     login(loginRequest: LoginRequest): Observable<apiResponse> {
         return this.http
-            .post<apiResponse>(
-                `${this.config.apiUrl}/users/authenticate`,
-                loginRequest
-            )
+            .post<apiResponse>(`${this.config.apiUrl}/users/authenticate`, loginRequest)
             .pipe(
                 tap((data) => this.auth.doLoginUser(data?.data)),
                 catchError(this.handleError)
             );
     }
 
-    getCurrentUser$(): Observable<User | undefined> {
+    getCurrentUser$(): Observable<User> {
         return this.auth.getCurrentUser();
     }
 

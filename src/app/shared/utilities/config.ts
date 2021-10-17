@@ -22,7 +22,7 @@ export type apiResponse = {
 };
 
 export type User = {
-    id?: number;
+    id: number;
     firstname: string;
     lastname: string;
     username: string;

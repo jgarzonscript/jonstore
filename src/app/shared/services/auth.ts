@@ -7,8 +7,7 @@ export class Auth {
     private readonly JWT_TOKEN = "JWT_TOKEN";
     private loggedUserToken = "";
 
-    public isUserLoggedIn: BehaviorSubject<boolean> =
-        new BehaviorSubject<boolean>(false);
+    public isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     doLoginUser(token: string): void {
         // localStorage.setItem(this.JWT_TOKEN, token);
@@ -26,14 +25,14 @@ export class Auth {
         return this.loggedUserToken;
     }
 
-    getCurrentUser(): Observable<User | undefined> {
+    getCurrentUser(): Observable<User> {
         const token = this.getToken();
         if (token) {
             const encodedPayload = token.split(".")[1];
             const payload = window.atob(encodedPayload);
-            return of(JSON.parse(payload)?.user);
+            return of(JSON.parse(payload)?.user as User);
         } else {
-            return of(undefined);
+            throw new Error(undefined);
         }
     }
 }
