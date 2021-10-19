@@ -1,6 +1,7 @@
-import { Observable, of, BehaviorSubject } from "rxjs";
+import { Observable, of, BehaviorSubject, throwError } from "rxjs";
 import { Injectable } from "@angular/core";
 import { User } from "../utilities/config";
+import { HttpHeaders } from "@angular/common/http";
 
 @Injectable()
 export class Auth {
@@ -12,7 +13,6 @@ export class Auth {
     doLoginUser(token: string): void {
         // localStorage.setItem(this.JWT_TOKEN, token);
         this.loggedUserToken = token;
-        this.isUserLoggedIn.next(true);
     }
 
     doLogoutUser(): void {
@@ -32,7 +32,15 @@ export class Auth {
             const payload = window.atob(encodedPayload);
             return of(JSON.parse(payload)?.user as User);
         } else {
-            throw new Error(undefined);
+            return throwError(new Error("no user available"));
         }
+    }
+
+    getAuthorizationHeader(): HttpHeaders {
+        const headers = new HttpHeaders({
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.getToken()}`
+        });
+        return headers;
     }
 }
