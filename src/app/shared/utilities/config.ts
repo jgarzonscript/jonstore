@@ -99,7 +99,7 @@ export type apiResponse = {
     message?: string;
 };
 
-export type User = {
+export type apiUser = {
     id: number;
     firstname: string;
     lastname: string;

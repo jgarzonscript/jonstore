@@ -5,7 +5,7 @@ import { map, tap, catchError } from "rxjs/operators";
 
 import { Product } from "../models/product.model";
 import { Auth } from "./auth";
-import { Config, LoginRequest, apiResponse, User, Order } from "../utilities/config";
+import { Config, LoginRequest, apiResponse, apiUser, Order } from "../utilities/config";
 
 @Injectable({
     providedIn: "root"
@@ -29,12 +29,13 @@ export class HttpService {
             .post<apiResponse>(this.config.routes.authenticateUser(), loginRequest)
             .pipe(
                 tap((response) => this.auth.doLoginUser(response.data)),
+                tap((response) => this.auth.initUser(response.data)),
                 map((response) => !!response.data),
                 catchError(this.handleError)
             );
     }
 
-    getCurrentUser$(): Observable<User> {
+    getCurrentUser$(): Observable<apiUser> {
         return this.auth.getCurrentUser();
     }
 
@@ -73,5 +74,14 @@ export class HttpService {
                 map((resp) => this.config.serializeOrder(resp.data)),
                 catchError(this.handleError)
             );
+    }
+
+    getActiveOrder$(userId: number): Observable<Order> {
+        return this.getActiveOrder(userId).pipe(
+            catchError(() => {
+                // an active order did not exist so create one...
+                return this.createOrder(userId);
+            })
+        );
     }
 }

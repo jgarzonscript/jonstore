@@ -15,6 +15,7 @@ import { LoginComponent } from "./login-page/login/login.component";
 
 import { Config } from "./shared/utilities/config";
 import { Auth } from "./shared/services/auth";
+import { User } from "./shared/models/user.model";
 
 @NgModule({
     declarations: [
@@ -32,7 +33,7 @@ import { Auth } from "./shared/services/auth";
         HttpClientModule,
         FormsModule
     ],
-    providers: [Config, Auth],
+    providers: [Config, Auth, User],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
