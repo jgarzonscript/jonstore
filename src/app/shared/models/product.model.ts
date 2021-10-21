@@ -29,3 +29,13 @@ export class Product implements Deserializable {
         return /^-?[0-9]+$/.test(String(val));
     }
 }
+
+export type apiProduct = {
+    id: number;
+    name: string;
+    price: number;
+    category_id?: number;
+    seen?: number;
+    url?: string;
+    description?: string;
+};

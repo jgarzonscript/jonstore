@@ -19,30 +19,17 @@ export class HttpService {
     }
 
     getProducts(): Observable<Product[]> {
-        return this.http.get<[]>("http://localhost:3000/products").pipe(
-            map((data) => {
-                return data
-                    .map(
-                        (product: Product) =>
-                            new Product(
-                                product["name"],
-                                product["price"],
-                                product["url"],
-                                product["description"],
-                                product["category_id"],
-                                product["id"]
-                            )
-                    )
-                    .filter((prod: Product) => prod.url?.length);
-            })
-        );
+        return this.http
+            .get<apiResponse>(this.config.routes.allProducts())
+            .pipe(map((response) => this.config.serializeAllProducts(response.data)));
     }
 
-    login(loginRequest: LoginRequest): Observable<apiResponse> {
+    login(loginRequest: LoginRequest): Observable<Boolean> {
         return this.http
-            .post<apiResponse>(`${this.config.apiUrl}/users/authenticate`, loginRequest)
+            .post<apiResponse>(this.config.routes.authenticateUser(), loginRequest)
             .pipe(
-                tap((data) => this.auth.doLoginUser(data?.data)),
+                tap((response) => this.auth.doLoginUser(response.data)),
+                map((response) => !!response.data),
                 catchError(this.handleError)
             );
     }
@@ -50,14 +37,6 @@ export class HttpService {
     getCurrentUser$(): Observable<User> {
         return this.auth.getCurrentUser();
     }
-
-    // isLoggedIn$(): BehaviorSubject<boolean> {
-    //     // return this.auth.getCurrentUser().pipe(
-    //     //     map((user) => !!user),
-    //     //     catchError(() => of(false))
-    //     // );
-    //     return this.auth.isUserLoggedIn;
-    // }
 
     isLoggedIn$(): Observable<Boolean> {
         return this.auth.getCurrentUser().pipe(
