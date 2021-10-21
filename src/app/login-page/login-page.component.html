@@ -1,41 +1,48 @@
-<div>&nbsp;</div>
-<!-- <div class="alert alert-warning" role="alert" *ngIf="error">
+<div class="ccon">
+    <div>&nbsp;</div>
+    <!-- <div class="alert alert-warning" role="alert" *ngIf="error">
     {{ error }}
 </div> -->
-<div class="d-flex justify-content-center">
-    <div
-        *ngIf="message"
-        role="alert"
-        id="message"
-        class="alert alert-success col-6"
-        style="margin-bottom: 1.5rem; text-align: center"
-    >
-        {{ message }}
-        <!-- <span style="position: absolute; right: 20px">{{ cntr }}</span> -->
-    </div>
-    <div
-        *ngIf="error"
-        role="alert"
-        class="alert alert-warning col-6"
-        style="margin-bottom: 1.5rem; text-align: center"
-    >
-        {{ error }}
-    </div>
-    <div
-        *ngIf="error.length == 0 && message.length == 0"
-        role="alert"
-        class="alert alert-light col-6"
-        style="margin-bottom: 1.5rem; text-align: center"
-    >
-        &nbsp;
-    </div>
-</div>
-<div class="loginpagecontainer">
-    <app-login (loginData)="loginSubmitted($event)"></app-login>
-    <div *ngIf="countDown > 0" class="signinguserindiv">
-        <div id="signinguserincontainer">
-            <h1>Signing you in...</h1>
+    <div class="d-flex justify-content-center">
+        <div
+            *ngIf="message"
+            role="alert"
+            id="message"
+            class="alert alert-success col-6"
+            style="margin-bottom: 1.5rem; text-align: center"
+        >
+            {{ message }}
+            <!-- <span style="position: absolute; right: 20px">{{ cntr }}</span> -->
+        </div>
+        <div
+            *ngIf="error"
+            role="alert"
+            class="alert alert-warning col-6"
+            style="margin-bottom: 1.5rem; text-align: center"
+        >
+            {{ error }}
+        </div>
+        <div
+            *ngIf="error.length == 0 && message.length == 0"
+            role="alert"
+            class="alert alert-light col-6"
+            style="margin-bottom: 1.5rem; text-align: center"
+        >
+            &nbsp;
         </div>
     </div>
-    <div *ngIf="countDown > 0" id="blanket">&nbsp;</div>
+    <div class="loginpagecontainer">
+        <app-login (loginData)="loginSubmitted($event)"></app-login>
+        <!-- *ngIf="countDown > 0" -->
+        <div class="signinguserindiv" [ngClass]="{ show: countDown > 0 }">
+            <div id="signinguserincontainer">
+                <h1>Signing you in...</h1>
+                <div id="blank" [ngClass]="{ blankModalRemove: countDown > 0 }">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        <!-- <div *ngIf="countDown > 0" id="blanket">&nbsp;</div> -->
+    </div>
+    <div id="blanket" [ngClass]="{ blanket: countDown > 0 }">&nbsp;</div>
 </div>

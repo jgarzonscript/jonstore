@@ -20,6 +20,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         // this.message = "test hello world...";
+        // this.countDown = 1;
     }
 
     ngAfterViewInit() {
@@ -52,5 +53,10 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
             this.error = "";
         }, 10000);
+    }
+
+    cssTest() {
+        console.log("helloworld");
+        return "helloworld";
     }
 }
