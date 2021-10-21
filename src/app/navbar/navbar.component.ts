@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { HttpService } from "../shared/services/http.service";
 import { NavigationEnd, Router } from "@angular/router";
+import { User } from "../shared/models/user.model";
 
 @Component({
     selector: "navbar",
@@ -12,19 +13,14 @@ export class NavbarComponent implements OnInit, AfterViewInit {
 
     loggedInUser = "";
 
-    constructor(private http: HttpService, private router: Router) {}
+    constructor(private http: HttpService, private router: Router, private user: User) {}
 
     ngOnInit(): void {
-        // this.http
-        //     .isLoggedIn$()
-        //     .subscribe((val) => console.log(`user is logged in: ${val}`));
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd && !this.loggedInUser) {
-                console.log("hello from inside NavigationEnd");
-                this.http.getCurrentUser$().subscribe(
-                    (user) => (this.loggedInUser = user.username),
-                    () => {}
-                );
+                if (this.user.isLoggedIn) {
+                    this.loggedInUser = this.user.username;
+                }
             }
         });
     }
