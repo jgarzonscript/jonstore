@@ -2,16 +2,29 @@
     <navbar></navbar>
 </header> -->
 
-<div
-    fxLayout="row wrap"
-    fxLayoutAlign="space-evenly center"
-    class="product-container"
->
+<div fxLayout="row wrap" fxLayoutAlign="space-evenly center" class="product-container">
     <product-item
         *ngFor="let aproduct of products"
         [product]="aproduct"
         fxLayout="column"
         fxLayoutAlign="flex-start center"
         class="product-item"
+        (addProduct)="onAddProduct($event)"
+        [cart]="productsInCart"
     ></product-item>
+</div>
+
+<div
+    id="jgmodal-window"
+    [ngClass]="{
+        showContent: showModalContent === 1,
+        hide: hideModal === 1,
+        remove: removeModal === 1
+    }"
+>
+    <div class="jgmodal-body">
+        <div class="jgmodal-content">
+            <h2>Loading...</h2>
+        </div>
+    </div>
 </div>

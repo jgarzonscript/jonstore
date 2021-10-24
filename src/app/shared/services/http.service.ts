@@ -5,7 +5,15 @@ import { map, tap, catchError } from "rxjs/operators";
 
 import { Product } from "../models/product.model";
 import { Auth } from "./auth";
-import { Config, LoginRequest, apiResponse, apiUser, Order } from "../utilities/config";
+import {
+    Config,
+    LoginRequest,
+    apiResponse,
+    apiUser,
+    Order,
+    addProductRequest,
+    OrderProduct
+} from "../utilities/config";
 
 @Injectable({
     providedIn: "root"
@@ -83,5 +91,28 @@ export class HttpService {
                 return this.createOrder(userId);
             })
         );
+    }
+
+    addProductToOrder(
+        orderId: number,
+        _addProductRequest: addProductRequest
+    ): Observable<boolean> {
+        return this.http
+            .post<apiResponse>(this.config.routes.addProduct(orderId), _addProductRequest)
+            .pipe(
+                map((response) => !!response.data),
+                catchError(this.handleError)
+            );
+    }
+
+    getProductsInCart(orderId: number): Observable<OrderProduct[]> {
+        return this.http
+            .get<apiResponse>(this.config.routes.productsInCart(orderId))
+            .pipe(
+                map((response) =>
+                    this.config.serializeProductsInCart_ORDER(response.data)
+                ),
+                catchError(this.handleError)
+            );
     }
 }
