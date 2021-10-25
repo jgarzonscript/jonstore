@@ -76,6 +76,14 @@ export class Config {
 
         return output;
     }
+
+    serializeSingleProductInCart_ORDER(data: apiOrderProductResponse): OrderProduct {
+        const productInCart: OrderProduct = {
+            productId: parseInt(data["product_id"]),
+            qty: data["quantity"]
+        };
+        return productInCart;
+    }
 }
 
 class Routes {

@@ -16,12 +16,34 @@ export class ProductItemComponent implements OnInit {
     data: number[] = [1, 2, 3, 4, 5, 6];
     quantitySelected: number = 1;
 
+    imgModAdded = 0;
+
     constructor() {}
 
     ngOnInit(): void {
-        var here = true;
-        if (this.productsInCart.length) {
-            var here = true;
+        this.findAndShowLabel();
+    }
+
+    /**
+     * @description checkes to see if this product is already in cart
+     * if yes -- display label on image
+     */
+    private findAndShowLabel(): void {
+        if (this.productsInCart?.length) {
+            const thisProductId = String(this.product.id);
+            if (
+                this.productsInCart
+                    .map((cartItem) => cartItem.productId)
+                    .indexOf(parseInt(thisProductId)) >= 0
+            ) {
+                this.imgModAdded = 1;
+            }
+        }
+    }
+
+    onAddProductToCart(cartItem: OrderProduct): void {
+        if (this.product.id === cartItem.productId) {
+            this.imgModAdded = 1;
         }
     }
 

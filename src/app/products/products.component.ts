@@ -1,10 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { Product } from "../shared/models/product.model";
 import { HttpService } from "../shared/services/http.service";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 import { addProductRequest, Order, OrderProduct } from "../shared/utilities/config";
 import { User } from "../shared/models/user.model";
 import { Observable, zip } from "rxjs";
+
+import { ProductItemComponent } from "./product-item/product-item.component";
 
 @Component({
     selector: "app-products",
@@ -18,6 +20,8 @@ export class ProductsComponent implements OnInit {
     hideModal = 0;
     removeModal = 0;
     productsInCart!: OrderProduct[];
+
+    @ViewChild(ProductItemComponent) private productComponent!: ProductItemComponent;
 
     constructor(private http: HttpService, private router: Router, private user: User) {}
 
@@ -127,6 +131,6 @@ export class ProductsComponent implements OnInit {
 
         this.http
             .addProductToOrder(this.order.id, addProductRequest)
-            .subscribe((didUpdate) => console.log(`added product to order:` + didUpdate));
+            .subscribe((cartItem) => this.productComponent.onAddProductToCart(cartItem));
     }
 }

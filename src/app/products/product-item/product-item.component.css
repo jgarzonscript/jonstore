@@ -14,3 +14,34 @@ img.product-image {
     width: 100%;
     /* margin-bottom: 8px; */
 }
+
+.jgimg {
+    position: relative;
+}
+
+.jgimg .jgImgAdded {
+    position: absolute;
+    /* width: 100%; */
+    height: 100px;
+    /* bottom: 100px; */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 248px;
+    background-color: rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    transition: opacity 500ms;
+}
+
+.jgImgAdded.show {
+    opacity: 1 !important;
+}
+
+.jgImageAddedBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-family: "Noto Sans Mono", monospace;
+}

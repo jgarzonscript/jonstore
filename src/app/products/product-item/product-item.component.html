@@ -1,14 +1,17 @@
-<img src="{{ product.url }}" alt="" class="product-image" />
+<div class="jgimg">
+    <img src="{{ product.url }}" alt="" class="product-image" />
+    <div class="jgImgAdded" [ngClass]="{ show: imgModAdded === 1 }">
+        <div class="jgImageAddedBody">
+            <h2>Added</h2>
+        </div>
+    </div>
+</div>
+
 <div class="item">{{ product.name }}</div>
 <div class="item">{{ product.price / 100 | currency }}</div>
 <form #addform="ngForm">
     <div class="item">
-        <select
-            #qty
-            name="qantity"
-            [(ngModel)]="quantitySelected"
-            class="select-input"
-        >
+        <select #qty name="qantity" [(ngModel)]="quantitySelected" class="select-input">
             <option *ngFor="let i of data" [ngValue]="i" [selected]="2">
                 {{ i }}
             </option>
@@ -20,6 +23,7 @@
             value="Add to cart"
             class="btn btn-primary btn-sm"
             (click)="submit()"
+            [disabled]="imgModAdded === 1"
         />
     </div>
 </form>

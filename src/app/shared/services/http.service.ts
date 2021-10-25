@@ -96,11 +96,13 @@ export class HttpService {
     addProductToOrder(
         orderId: number,
         _addProductRequest: addProductRequest
-    ): Observable<boolean> {
+    ): Observable<OrderProduct> {
         return this.http
             .post<apiResponse>(this.config.routes.addProduct(orderId), _addProductRequest)
             .pipe(
-                map((response) => !!response.data),
+                map((response) =>
+                    this.config.serializeSingleProductInCart_ORDER(response.data)
+                ),
                 catchError(this.handleError)
             );
     }
