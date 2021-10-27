@@ -12,7 +12,7 @@
 <form #addform="ngForm">
     <div class="item">
         <select #qty name="qantity" [(ngModel)]="quantitySelected" class="select-input">
-            <option *ngFor="let i of data" [ngValue]="i" [selected]="2">
+            <option *ngFor="let i of data">
                 {{ i }}
             </option>
         </select>

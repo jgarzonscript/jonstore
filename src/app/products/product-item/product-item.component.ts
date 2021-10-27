@@ -21,22 +21,24 @@ export class ProductItemComponent implements OnInit {
     constructor() {}
 
     ngOnInit(): void {
-        this.findAndShowLabel();
+        this.initProductAncillaries();
     }
 
     /**
      * @description checkes to see if this product is already in cart
      * if yes -- display label on image
      */
-    private findAndShowLabel(): void {
+    private initProductAncillaries(): void {
         if (this.productsInCart?.length) {
-            const thisProductId = String(this.product.id);
-            if (
-                this.productsInCart
-                    .map((cartItem) => cartItem.productId)
-                    .indexOf(parseInt(thisProductId)) >= 0
-            ) {
+            /*
+               if we have this-Product in the cart -- then.. */
+            const cartItem = this.productsInCart.find(
+                (cartItem) => cartItem.productId === this.product.id
+            );
+
+            if (cartItem) {
                 this.imgModAdded = 1;
+                this.quantitySelected = cartItem.qty;
             }
         }
     }
