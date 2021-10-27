@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewChildren, QueryList } from "@angular/core";
 import { Product } from "../shared/models/product.model";
 import { HttpService } from "../shared/services/http.service";
 import { Router } from "@angular/router";
@@ -21,7 +21,9 @@ export class ProductsComponent implements OnInit {
     removeModal = 0;
     productsInCart!: OrderProduct[];
 
-    @ViewChild(ProductItemComponent) private productComponent!: ProductItemComponent;
+    // @ViewChild(ProductItemComponent) private productComponent!: ProductItemComponent;
+    @ViewChildren(ProductItemComponent)
+    private productComponents!: QueryList<ProductItemComponent>;
 
     constructor(private http: HttpService, private router: Router, private user: User) {}
 
@@ -131,6 +133,12 @@ export class ProductsComponent implements OnInit {
 
         this.http
             .addProductToOrder(this.order.id, addProductRequest)
-            .subscribe((cartItem) => this.productComponent.onAddProductToCart(cartItem));
+            .subscribe((cartItem) => {
+                const thisComponent = this.productComponents.find(
+                    (thisComponent) => thisComponent.product.id === cartItem.productId
+                );
+
+                thisComponent?.initImgLabel(cartItem);
+            });
     }
 }

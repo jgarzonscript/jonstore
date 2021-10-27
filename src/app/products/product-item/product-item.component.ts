@@ -41,7 +41,7 @@ export class ProductItemComponent implements OnInit {
         }
     }
 
-    onAddProductToCart(cartItem: OrderProduct): void {
+    initImgLabel(cartItem: OrderProduct): void {
         if (this.product.id === cartItem.productId) {
             this.imgModAdded = 1;
         }
