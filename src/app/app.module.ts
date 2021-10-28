@@ -16,6 +16,7 @@ import { LoginComponent } from "./login-page/login/login.component";
 import { Config } from "./shared/utilities/config";
 import { Auth } from "./shared/services/auth";
 import { User } from "./shared/models/user.model";
+import { CartComponent } from './cart/cart.component';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { User } from "./shared/models/user.model";
         ProductItemComponent,
         NavbarComponent,
         LoginPageComponent,
-        LoginComponent
+        LoginComponent,
+        CartComponent
     ],
     imports: [
         BrowserModule,

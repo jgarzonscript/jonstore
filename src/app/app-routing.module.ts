@@ -2,9 +2,8 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
 import { LoginPageComponent } from "./login-page/login-page.component";
-import { LoginComponent } from "./login-page/login/login.component";
-
 import { ProductsComponent } from "./products/products.component";
+import { CartComponent } from "./cart/cart.component";
 
 const routes: Routes = [
     { path: "", component: ProductsComponent },
@@ -17,6 +16,10 @@ const routes: Routes = [
         //         component: LoginComponent
         //     }
         // ]
+    },
+    {
+        path: "cart",
+        component: CartComponent
     }
 ];
 
