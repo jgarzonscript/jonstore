@@ -27,9 +27,10 @@ export class HttpService {
     }
 
     getProducts(): Observable<Product[]> {
-        return this.http
-            .get<apiResponse>(this.config.routes.allProducts())
-            .pipe(map((response) => this.config.serializeAllProducts(response.data)));
+        return this.http.get<apiResponse>(this.config.routes.allProducts()).pipe(
+            map((response) => this.config.serializeAllProducts(response.data)),
+            catchError(this.handleError)
+        );
     }
 
     login(loginRequest: LoginRequest): Observable<Boolean> {

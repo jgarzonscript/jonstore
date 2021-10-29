@@ -190,6 +190,9 @@ export type apiOrderProductResponse = {
     quantity: number;
 };
 
+/**
+ * Cart-Item object
+ */
 export type OrderProduct = {
     productId: number;
     qty: number;
