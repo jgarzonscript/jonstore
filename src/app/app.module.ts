@@ -18,6 +18,7 @@ import { Auth } from "./shared/services/auth";
 import { User } from "./shared/models/user.model";
 import { CartComponent } from "./cart/cart.component";
 import { CartItemComponent } from "./cart/cart-item/cart-item.component";
+import { ClientFormComponent } from './cart/client-form/client-form.component';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { CartItemComponent } from "./cart/cart-item/cart-item.component";
         LoginPageComponent,
         LoginComponent,
         CartComponent,
-        CartItemComponent
+        CartItemComponent,
+        ClientFormComponent
     ],
     imports: [
         BrowserModule,
