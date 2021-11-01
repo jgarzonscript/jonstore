@@ -16,7 +16,8 @@ import { LoginComponent } from "./login-page/login/login.component";
 import { Config } from "./shared/utilities/config";
 import { Auth } from "./shared/services/auth";
 import { User } from "./shared/models/user.model";
-import { CartComponent } from './cart/cart.component';
+import { CartComponent } from "./cart/cart.component";
+import { CartItemComponent } from "./cart/cart-item/cart-item.component";
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import { CartComponent } from './cart/cart.component';
         NavbarComponent,
         LoginPageComponent,
         LoginComponent,
-        CartComponent
+        CartComponent,
+        CartItemComponent
     ],
     imports: [
         BrowserModule,
@@ -36,6 +38,7 @@ import { CartComponent } from './cart/cart.component';
         FormsModule
     ],
     providers: [Config, Auth, User],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    entryComponents: [CartItemComponent]
 })
 export class AppModule {}

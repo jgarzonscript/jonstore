@@ -12,7 +12,8 @@ import {
     apiUser,
     Order,
     addProductRequest,
-    OrderProduct
+    OrderProduct,
+    updatedCartItemRequest
 } from "../utilities/config";
 
 @Injectable({
@@ -115,6 +116,21 @@ export class HttpService {
                 map((response) =>
                     this.config.serializeProductsInCart_ORDER(response.data)
                 ),
+                catchError(this.handleError)
+            );
+    }
+
+    updateCartItem(updatedCartItemRequest: updatedCartItemRequest): Observable<boolean> {
+        return this.http
+            .patch<apiResponse>(
+                this.config.routes.updateCartItem(updatedCartItemRequest.orderId),
+                updatedCartItemRequest,
+                {
+                    headers: this.auth.getAuthorizationHeader()
+                }
+            )
+            .pipe(
+                map((response) => !!response.data),
                 catchError(this.handleError)
             );
     }

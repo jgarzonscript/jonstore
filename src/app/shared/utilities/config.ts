@@ -93,7 +93,8 @@ class Routes {
         ["orderByUser"]: ":API_URL/orderbyuser/:userId",
         ["createOrder"]: ":API_URL/orders/:userId",
         ["addProduct"]: ":API_URL/orders/:orderId/products",
-        ["productsInCart"]: ":API_URL/orders/:orderId/products"
+        ["productsInCart"]: ":API_URL/orders/:orderId/products",
+        ["updateCartItem"]: ":API_URL/orders/:orderId/products"
     };
 
     private USER_ROUTES = {
@@ -142,6 +143,12 @@ class Routes {
         return url;
     }
 
+    updateCartItem(orderId: number): string {
+        const options = Object.assign({}, this.options, { orderId });
+        const url = this.replaceUrl(this.ORDER_ROUTES.updateCartItem, options);
+        return url;
+    }
+
     private replaceUrl(url: string, options: Options): string {
         var regex = new RegExp(":(" + Object.keys(options).join("|") + ")", "g");
 
@@ -182,6 +189,12 @@ export type Order = {
 export type addProductRequest = {
     product_id: number;
     quantity: number;
+};
+
+export type updatedCartItemRequest = {
+    productId: number;
+    qty: number;
+    orderId: number;
 };
 
 export type apiOrderProductResponse = {
