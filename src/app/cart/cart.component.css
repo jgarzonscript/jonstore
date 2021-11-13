@@ -21,3 +21,7 @@
     align-items: center;
     margin-top: 20px;
 }
+.jg-cartcontent1 {
+    flex-grow: 1;
+    margin-top: 20px;
+}

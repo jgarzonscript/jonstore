@@ -10,6 +10,7 @@ import { NavbarComponent } from "./navbar/navbar.component";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 import { LoginPageComponent } from "./login-page/login-page.component";
 import { LoginComponent } from "./login-page/login/login.component";
 
@@ -18,7 +19,10 @@ import { Auth } from "./shared/services/auth";
 import { User } from "./shared/models/user.model";
 import { CartComponent } from "./cart/cart.component";
 import { CartItemComponent } from "./cart/cart-item/cart-item.component";
-import { ClientFormComponent } from './cart/client-form/client-form.component';
+import { ClientFormComponent } from "./cart/client-form/client-form.component";
+// import { CartformvalidatorDirective } from "./cart/cartformvalidator.directive";
+// import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { HelperTextComponent } from "./cart/helper-text/helper-text.component";
 
 @NgModule({
     declarations: [
@@ -30,14 +34,18 @@ import { ClientFormComponent } from './cart/client-form/client-form.component';
         LoginComponent,
         CartComponent,
         CartItemComponent,
-        ClientFormComponent
+        ClientFormComponent,
+        // CartformvalidatorDirective,
+        HelperTextComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         FlexLayoutModule,
         HttpClientModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
+        // NgbModule
     ],
     providers: [Config, Auth, User],
     bootstrap: [AppComponent],

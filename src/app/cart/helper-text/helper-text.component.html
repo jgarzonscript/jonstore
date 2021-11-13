@@ -1,0 +1,29 @@
+<!-- <ng-container *ngIf="!selectedTemplateRef"> nothing here yet </ng-container> -->
+
+<!--
+<ng-container
+    *ngIf="selectedTemplateRef"
+    [ngTemplateOutlet]="selectedTemplateRef"
+></ng-container> -->
+
+<!-- new stuff here  -->
+
+<!-- <ng-template #req let-type="type">
+    <div class="ccHelperWindow form-text" #helperWindow>
+        <div id="outputDiv" #HelperContent>
+            {{ getHelperText(type) }}
+        </div>
+    </div>
+</ng-template> -->
+
+<!-- <ng-container
+    *ngIf="selectedTemplateRef"
+    [ngTemplateOutlet]="selectedTemplateRef"
+></ng-container> -->
+
+<div class="ccHelperWindow form-text" #helperWindow>
+    <div id="outputDiv" #HelperContent>
+        {{ content }}
+    </div>
+</div>
+<!-- {{ formControl.status }} -->

@@ -1,1 +1,119 @@
-<p>client-form works!</p>
+<div id="cform-container">
+    <!--
+        #f="ngForm    
+    -->
+    <form [formGroup]="profileForm">
+        <!-- FULLNAME -->
+        <div class="mb-3">
+            <label for="fullname" class="form-label">Full name</label>
+            <input
+                type="text"
+                class="form-control"
+                id="fullName"
+                formControlName="fullName"
+                (focus)="onFocus(fullname, helperFullname)"
+                (blur)="onBlur(fullname, helperFullname)"
+                #fullname
+            />
+
+            <!-- HELPER TEXT -->
+            <helper-text
+                #helperFullname
+                sourceRef="fullName"
+                [formGroup]="profileForm"
+                (onValidateEvent)="onValidate($event)"
+                instructions="minimum 3 characters"
+                [validatorsAndMessages]="[
+                    ['required', 'this is a required field'],
+                    ['minlength', 'minimum 3 characters needed']
+                ]"
+            ></helper-text>
+        </div>
+
+        <!-- ADDRESS -->
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input
+                type="text"
+                class="form-control"
+                id="address"
+                formControlName="address"
+                (focus)="onFocus(address, helperAddress)"
+                (blur)="onBlur(address, helperAddress)"
+                #address
+            />
+
+            <!-- HELPER TEXT -->
+            <helper-text
+                #helperAddress
+                sourceRef="address"
+                [formGroup]="profileForm"
+                (onValidateEvent)="onValidate($event)"
+                instructions="minimum 6 characters"
+                [validatorsAndMessages]="[
+                    ['required', 'this is a required field'],
+                    ['minlength', 'minimum 6 characters needed']
+                ]"
+            >
+            </helper-text>
+
+            <!-- <ng-container
+                *ngTemplateOutlet="template; context: { type: 'address' }"
+            ></ng-container> -->
+        </div>
+
+        <!-- CREDIT CARD -->
+        <div class="mb-3" style="margin-bottom: 0.5rem !important">
+            <label for="inputCC" class="form-label">Credit card number</label>
+            <input
+                type="text"
+                class="form-control"
+                id="inputCC"
+                formControlName="creditcard"
+                #creditcard
+                (focus)="onFocus(creditcard, helpercc)"
+                (blur)="onBlur(creditcard, helpercc)"
+            />
+
+            <helper-text
+                #helpercc
+                sourceRef="creditcard"
+                [formGroup]="profileForm"
+                (onValidateEvent)="onValidate($event)"
+                instructions="16 digit number; no dashes or spaces"
+                [validatorsAndMessages]="[
+                    ['required', '\'credit card\' number is required'],
+                    ['pattern', 'invalid \'credit card\' number']
+                ]"
+            >
+            </helper-text>
+        </div>
+
+        <div class="mb-3">
+            <div class="form-text text-muted">
+                We'll never share your payment details with anyone else.
+            </div>
+        </div>
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+            style="margin-left: 10px"
+            [disabled]="f.invalid"
+        >
+            Submit
+        </button>
+
+        <!-- END -->
+    </form>
+</div>
+
+<!-- other external windows : -->
+
+<!-- <ng-template #req let-type="type">
+    <div class="ccHelperWindow form-text" #helperWindow>
+        <div id="outputDiv" #HelperContent>
+            {{ getHelperText(type) }}
+        </div>
+    </div>
+</ng-template> -->
