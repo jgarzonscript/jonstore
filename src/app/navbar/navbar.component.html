@@ -20,7 +20,21 @@
         <h1>Jon's Store</h1>
         <div fxLayout="row" fxLayoutGap="12px">
             <a routerLink="/">Product List</a> <span>|</span>
-            <a routerLink="/cart">Cart</a>
+            <span>
+                <a
+                    [routerLink]="cartItems == 0 ? null : pathToCart"
+                    [class.disabled]="cartItems === 0"
+                    [ngbTooltip]="cartItems === 0 ? tooltip : null"
+                    placement="bottom"
+                    tooltipClass="navbarComponentCartToolTip"
+                    [animation]="true"
+                    triggers="click:mouseout"
+                    >Cart
+                </a>
+                <span *ngIf="cartItems > 0" class="badge bg-secondary">{{
+                    cartItems
+                }}</span>
+            </span>
         </div>
     </div>
     <div class="element">
@@ -30,3 +44,10 @@
         >
     </div>
 </div>
+
+<!-- TOOLTIP -->
+<ng-template #tooltip>
+    <div>
+        you have <b>{{ cartItems }}</b> items in your cart!
+    </div>
+</ng-template>

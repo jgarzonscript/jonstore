@@ -2,6 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from "@angula
 import { HttpService } from "../shared/services/http.service";
 import { NavigationEnd, Router } from "@angular/router";
 import { User } from "../shared/models/user.model";
+import { SharedDataService } from "../shared/services/shared-data.service";
+import { OrderProduct } from "../shared/utilities/config";
 
 @Component({
     selector: "navbar",
@@ -12,8 +14,15 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     @ViewChild("lnkLogin") lnkLogin: ElementRef<HTMLAnchorElement> = {} as ElementRef;
 
     loggedInUser = "";
+    cartItems = 0;
+    pathToCart = "/cart";
 
-    constructor(private http: HttpService, private router: Router, private user: User) {}
+    constructor(
+        private http: HttpService,
+        private router: Router,
+        private user: User,
+        private dataSvc: SharedDataService
+    ) {}
 
     ngOnInit(): void {
         this.router.events.subscribe((event) => {
@@ -23,6 +32,8 @@ export class NavbarComponent implements OnInit, AfterViewInit {
                 }
             }
         });
+
+        this.dataSvc.CartItems$.subscribe((items) => this.handleCartItems(items));
     }
 
     ngAfterViewInit(): void {
@@ -40,5 +51,9 @@ export class NavbarComponent implements OnInit, AfterViewInit {
             }
         });
         */
+    }
+
+    private handleCartItems(items: OrderProduct[]): void {
+        this.cartItems = items.length;
     }
 }

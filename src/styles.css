@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+.navbarComponentCartToolTip > .tooltip-inner {
+    background-color: #fff !important;
+    color: #333 !important;
+    border: 1px solid #33b5e5;
+    max-width: 250px;
+}
+
+.navbarComponentCartToolTip > .arrow::before {
+    /* border-right-color: #fff; */
+    border-bottom-color: #fff;
+}
+
+/* .bs-tooltip-auto[x-placement^=right] .arrow::before, .bs-tooltip-right .arrow::before */

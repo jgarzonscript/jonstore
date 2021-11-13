@@ -24,6 +24,8 @@ import { ClientFormComponent } from "./cart/client-form/client-form.component";
 // import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { HelperTextComponent } from "./cart/helper-text/helper-text.component";
 
+import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -44,8 +46,9 @@ import { HelperTextComponent } from "./cart/helper-text/helper-text.component";
         FlexLayoutModule,
         HttpClientModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
         // NgbModule
+        NgbTooltipModule
     ],
     providers: [Config, Auth, User],
     bootstrap: [AppComponent],

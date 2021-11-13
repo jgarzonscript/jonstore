@@ -35,3 +35,16 @@ a {
     align-items: center;
     margin-top: 10px;
 }
+
+.cctooltip {
+    background-color: #fff !important;
+    color: #333 !important;
+}
+
+a.disabled {
+    /* cursor: not-allowed; */
+    /* opacity: 0.75; */
+}
+a.disabled:hover {
+    text-decoration: none;
+}

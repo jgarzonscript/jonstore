@@ -15,12 +15,18 @@ import {
     OrderProduct,
     updatedCartItemRequest
 } from "../utilities/config";
+import { SharedDataService } from "./shared-data.service";
 
 @Injectable({
     providedIn: "root"
 })
 export class HttpService {
-    constructor(private http: HttpClient, private auth: Auth, private config: Config) {}
+    constructor(
+        private http: HttpClient,
+        private auth: Auth,
+        private config: Config,
+        private sharedService: SharedDataService
+    ) {}
 
     private handleError(error: HttpErrorResponse) {
         console.error(`Backend returned code ${error.status}, body was: `, error.error);
@@ -116,6 +122,7 @@ export class HttpService {
                 map((response) =>
                     this.config.serializeProductsInCart_ORDER(response.data)
                 ),
+                tap((cartItems) => this.sharedService.sendCartItems(cartItems)),
                 catchError(this.handleError)
             );
     }
