@@ -111,6 +111,7 @@ export class HttpService {
                 map((response) =>
                     this.config.serializeSingleProductInCart_ORDER(response.data)
                 ),
+                tap((cartItem) => this.sharedService.addCartItem(cartItem)),
                 catchError(this.handleError)
             );
     }

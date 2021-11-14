@@ -3,13 +3,23 @@
 <div class="cartItemContainer">
     <div class="cartItemContentImg">
         <div class="cartItemImage">
-            <img src="{{ _product.url }}" alt="" class="cartItem_productImage" />
+            <img
+                src="{{ _product ? _product.url : noImg }}"
+                alt=""
+                class="cartItem_productImage"
+            />
         </div>
     </div>
     <div class="cartItemContent">
-        <h6>{{ _product.name }}</h6>
-        <div>{{ _product.price / 100 | currency }}</div>
+        <h6>{{ _product ? _product.name : noName }}</h6>
         <div>
+            <!-- {{ _product.price / 100 | currency }} -->
+            <div *ngIf="_product; else noprice">
+                {{ _product.price / 100 | currency }}
+            </div>
+            <ng-template #noprice> $1,000.00 </ng-template>
+        </div>
+        <div *ngIf="_product">
             Amount:
             <input
                 type="number"

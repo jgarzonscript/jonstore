@@ -26,13 +26,16 @@ import { Product } from "../shared/models/product.model";
 export class CartComponent implements OnInit, AfterViewInit {
     @ViewChild("itemsContainer", { read: ViewContainerRef }) container!: ViewContainerRef;
     private order!: Order;
+    isLoggedIn = false;
 
     constructor(
         private resolver: ComponentFactoryResolver,
         private cd: ChangeDetectorRef,
         private _user: User,
         private apiSvc: HttpService
-    ) {}
+    ) {
+        this.isLoggedIn = _user.isLoggedIn;
+    }
 
     ngOnInit(): void {
         /*
@@ -46,39 +49,50 @@ export class CartComponent implements OnInit, AfterViewInit {
 
             zip(this.initCartItems(_order.id), this.initProducts()).subscribe(
                 (responseArray) => {
-                    const [cartItems, productItems] = responseArray;
-
-                    /*
-                      we will dynamically create cart-item(s) (child component) for each cartItem (object) */
+                    const [cartItems, productItems] = responseArray,
+                        cartItemsExist = !!cartItems.length;
 
                     this.container.clear();
-                    cartItems.forEach((thisCartItem) => {
-                        const thisProduct = productItems.find(
-                            (thisProduct) => thisProduct.id === thisCartItem.productId
-                        );
+                    if (cartItemsExist) {
+                        this.loadCartItems(cartItems, productItems);
+                        this.cd.detectChanges();
+                    }
 
-                        const component = this.createCartItemComponent();
-                        component.instance._product = thisProduct as Product;
-                        component.instance._qty = thisCartItem.qty;
-
-                        /*
-                            child component event-emitter logic
-                            when cart-item submits a quantity change of product */
-
-                        component.instance.amountEmitEvent
-                            .asObservable()
-                            .pipe(
-                                map((nextVal) => {
-                                    nextVal.cartComponent = this;
-                                    return nextVal;
-                                })
-                            )
-                            .subscribe(this.handleAmountEmitter);
-                    });
-
-                    this.cd.detectChanges();
+                    if (!cartItemsExist) {
+                        this.emptyCartItem();
+                    }
                 }
             );
+        });
+    }
+
+    /**
+     * populates (dynamically) 'cart-item components' per item from cart
+     */
+    private loadCartItems(cartItems: OrderProduct[], products: Product[]): void {
+        cartItems.forEach((thisCartItem) => {
+            //
+            const thisProduct = products.find(
+                (thisProduct) => thisProduct.id === thisCartItem.productId
+            );
+
+            const component = this.createCartItemComponent();
+            component.instance._product = <Product>thisProduct;
+            component.instance._qty = thisCartItem.qty;
+
+            /*
+                child component event-emitter logic
+                when cart-item submits a quantity change of product */
+
+            component.instance.amountEmitEvent
+                .asObservable()
+                .pipe(
+                    map((nextVal) => {
+                        nextVal.cartComponent = this;
+                        return nextVal;
+                    })
+                )
+                .subscribe(this.handleAmountEmitter);
         });
     }
 
@@ -96,11 +110,18 @@ export class CartComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        // this.container.clear();
-        // const factory = this.resolver.resolveComponentFactory(CartItemComponent);
-        // const componentRef = this.container.createComponent(factory);
-        // componentRef.instance.title = "yolo mofo";
-        // this.cd.detectChanges();
+        // create dummy cart-item component when nothing is available
+        if (!this.isLoggedIn) {
+            this.emptyCartItem();
+        }
+    }
+
+    private emptyCartItem(): void {
+        // const dummyProduct = new Product("", 0),
+        //     component = this.createCartItemComponent();
+        // component.instance._product = dummyProduct;
+        this.createCartItemComponent();
+        this.cd.detectChanges();
     }
 
     private createCartItemComponent(): ComponentRef<CartItemComponent> {

@@ -3,8 +3,11 @@
     width: 100%;
     display: flex;
     min-width: 30rem;
-    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+    /* border-bottom: 0.5px solid rgba(0, 0, 0, 0.1); */
 }
+/* .cartItemContainer:last-child {
+    border-bottom: none;
+} */
 
 .cartItemContentImg {
     flex-grow: 1;
@@ -30,4 +33,11 @@
     /* padding: 10px; */
     width: 115px;
     border-radius: 10px;
+}
+
+:host {
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+:host:last-child {
+    border-bottom: none;
 }

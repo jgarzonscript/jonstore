@@ -20,6 +20,9 @@ export class CartItemComponent implements OnInit {
 
     @Output() amountEmitEvent = new EventEmitter<AmountEmitPayload>();
 
+    noImg = "https://genesisairway.com/wp-content/uploads/2019/05/no-image.jpg";
+    noName = "< demo product >";
+
     constructor() {
         this.subscription = this.amount$
             .asObservable()
@@ -27,7 +30,9 @@ export class CartItemComponent implements OnInit {
             .subscribe((nextVal) => this.amountEmitEvent.emit(nextVal));
     }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        var here = true;
+    }
 
     onChangeAmount(val: number): void {
         const data: AmountEmitPayload = {
