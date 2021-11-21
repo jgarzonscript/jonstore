@@ -156,6 +156,7 @@ export class CartComponent implements OnInit, AfterViewInit {
             thisCartItemComponent.destroy();
             this.cartTotal = this.calcCartTotal();
             this.addStyleTotalAmount();
+            this.cartItemsCount--;
         });
     }
 
