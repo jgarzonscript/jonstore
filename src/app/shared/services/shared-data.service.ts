@@ -23,4 +23,13 @@ export class SharedDataService {
             this.cartItemsBS.next(currentCartItems);
         });
     }
+
+    removeCartItem(productId: number): void {
+        const sub = this.CartItems$.pipe(take(1)).subscribe((currentCartItems) => {
+            const filtered = currentCartItems.filter(
+                (cartItem) => cartItem.productId !== productId
+            );
+            this.cartItemsBS.next(filtered);
+        });
+    }
 }

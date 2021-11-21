@@ -4,7 +4,8 @@ import {
     OnInit,
     TemplateRef,
     ViewChild,
-    AfterViewInit
+    AfterViewInit,
+    Input
 } from "@angular/core";
 
 import {
@@ -31,10 +32,7 @@ import { HelperTextComponent } from "../helper-text/helper-text.component";
 export class ClientFormComponent implements OnInit {
     profileForm!: FormGroup;
 
-    fullNameFieldIsFocused = 0;
-    addressFieldIsFocused = 0;
-
-    initialParentHeight = 0;
+    @Input() cartItemsCount: number = 0;
 
     // template!: TemplateRef<HTMLElement> | null;
     // @ViewChild("req", { static: true }) reqTemplate!: TemplateRef<HTMLElement>;

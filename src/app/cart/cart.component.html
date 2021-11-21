@@ -3,8 +3,13 @@
         <!-- <cart-item></cart-item> -->
         <!-- <ng-template #itemsContainer></ng-template> -->
         <ng-container #itemsContainer></ng-container>
+        <div id="amount">
+            Total:
+            <span id="totalContent" #totalContent> {{ cartTotal | currency }}</span>
+            <span #totalXtra id="totalXtra"></span>
+        </div>
     </div>
     <div class="jg-cartcontent">
-        <client-form></client-form>
+        <client-form [cartItemsCount]="cartItemsCount"></client-form>
     </div>
 </div>

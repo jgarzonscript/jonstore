@@ -15,8 +15,8 @@ export class CartItemComponent implements OnInit {
     _product!: Product;
     _qty!: number;
 
-    amount$ = new Subject<AmountEmitPayload>();
-    subscription!: Subscription;
+    private amount$ = new Subject<AmountEmitPayload>();
+    private subscription!: Subscription;
 
     @Output() amountEmitEvent = new EventEmitter<AmountEmitPayload>();
 
@@ -26,7 +26,7 @@ export class CartItemComponent implements OnInit {
     constructor() {
         this.subscription = this.amount$
             .asObservable()
-            .pipe(debounce(() => timer(2000)))
+            // .pipe(debounce(() => timer(2000)))
             .subscribe((nextVal) => this.amountEmitEvent.emit(nextVal));
     }
 

@@ -13,7 +13,8 @@ import {
     Order,
     addProductRequest,
     OrderProduct,
-    updatedCartItemRequest
+    updatedCartItemRequest,
+    removeCartItemRequest
 } from "../utilities/config";
 import { SharedDataService } from "./shared-data.service";
 
@@ -101,6 +102,10 @@ export class HttpService {
         );
     }
 
+    /**
+     *
+     * Add item to cart
+     */
     addProductToOrder(
         orderId: number,
         _addProductRequest: addProductRequest
@@ -116,6 +121,10 @@ export class HttpService {
             );
     }
 
+    /**
+     *
+     * Cart Items for a specific order
+     */
     getProductsInCart(orderId: number): Observable<OrderProduct[]> {
         return this.http
             .get<apiResponse>(this.config.routes.productsInCart(orderId))
@@ -139,6 +148,22 @@ export class HttpService {
             )
             .pipe(
                 map((response) => !!response.data),
+                catchError(this.handleError)
+            );
+    }
+
+    removeCartItem(removeCartItemRequest: removeCartItemRequest): Observable<boolean> {
+        const productId = removeCartItemRequest.productId;
+        return this.http
+            .delete<apiResponse>(
+                this.config.routes.removeCartItem(removeCartItemRequest),
+                {
+                    headers: this.auth.getAuthorizationHeader()
+                }
+            )
+            .pipe(
+                map((response) => !!response.data),
+                tap((_) => this.sharedService.removeCartItem(productId)),
                 catchError(this.handleError)
             );
     }

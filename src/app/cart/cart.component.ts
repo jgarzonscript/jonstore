@@ -1,5 +1,5 @@
-import { observable, Observable, zip, of } from "rxjs";
-import { map } from "rxjs/operators";
+import { observable, Observable, zip, of, timer, merge } from "rxjs";
+import { debounce, filter, map, tap } from "rxjs/operators";
 import {
     Component,
     OnInit,
@@ -9,13 +9,21 @@ import {
     ComponentRef,
     ComponentFactory,
     AfterViewInit,
-    ChangeDetectorRef
+    ChangeDetectorRef,
+    ViewChildren,
+    QueryList,
+    ElementRef
 } from "@angular/core";
 
 import { CartItemComponent } from "./cart-item/cart-item.component";
 import { User } from "../shared/models/user.model";
 import { HttpService } from "../shared/services/http.service";
-import { Order, OrderProduct, updatedCartItemRequest } from "../shared/utilities/config";
+import {
+    Order,
+    OrderProduct,
+    removeCartItemRequest,
+    updatedCartItemRequest
+} from "../shared/utilities/config";
 import { Product } from "../shared/models/product.model";
 
 @Component({
@@ -24,9 +32,23 @@ import { Product } from "../shared/models/product.model";
     styleUrls: ["./cart.component.css"]
 })
 export class CartComponent implements OnInit, AfterViewInit {
+    /**
+     * container where child components (cart-item) will be dynamically added
+     */
     @ViewChild("itemsContainer", { read: ViewContainerRef }) container!: ViewContainerRef;
+
+    @ViewChild("totalContent")
+    private _elemTotalContent!: ElementRef<HTMLElement>;
+
+    @ViewChild("totalXtra")
+    private _elemTotalXtra!: ElementRef<HTMLElement>;
+
     private order!: Order;
     isLoggedIn = false;
+    cartItemsCount = 0;
+    cartTotal = 0;
+
+    private cartItemComponents: ComponentRef<CartItemComponent>[] = [];
 
     constructor(
         private resolver: ComponentFactoryResolver,
@@ -54,6 +76,7 @@ export class CartComponent implements OnInit, AfterViewInit {
 
                     this.container.clear();
                     if (cartItemsExist) {
+                        this.cartItemsCount = cartItems.length;
                         this.loadCartItems(cartItems, productItems);
                         this.cd.detectChanges();
                     }
@@ -70,6 +93,7 @@ export class CartComponent implements OnInit, AfterViewInit {
      * populates (dynamically) 'cart-item components' per item from cart
      */
     private loadCartItems(cartItems: OrderProduct[], products: Product[]): void {
+        let totalAmount = 0;
         cartItems.forEach((thisCartItem) => {
             //
             const thisProduct = products.find(
@@ -79,26 +103,65 @@ export class CartComponent implements OnInit, AfterViewInit {
             const component = this.createCartItemComponent();
             component.instance._product = <Product>thisProduct;
             component.instance._qty = thisCartItem.qty;
+            this.cartItemComponents.push(component);
+
+            // calculate total
+            let thisProductPrice = <number>thisProduct?.price / 100,
+                qty = thisCartItem.qty,
+                thisItemTotal = thisProductPrice * qty;
+            totalAmount += thisItemTotal;
 
             /*
                 child component event-emitter logic
                 when cart-item submits a quantity change of product */
 
-            component.instance.amountEmitEvent
-                .asObservable()
-                .pipe(
-                    map((nextVal) => {
-                        nextVal.cartComponent = this;
-                        return nextVal;
-                    })
-                )
-                .subscribe(this.handleAmountEmitter);
+            const source$ = component.instance.amountEmitEvent.asObservable().pipe(
+                tap((_) => this.addStyleTotalAmount(true)),
+                debounce(() => timer(1000))
+            );
+
+            const processQtyChanged$ = source$.pipe(
+                filter((emitData) => emitData.qty !== 0),
+                tap((emitData) => this.handleOnCartItemQtyChanged(emitData))
+            );
+
+            const processOnDelete$ = source$.pipe(
+                filter((emitData) => emitData.qty === 0),
+                tap((emitData) => this.handleOnCartItemRemove(emitData))
+            );
+
+            const processAll$ = merge(processQtyChanged$, processOnDelete$);
+
+            processAll$.subscribe();
+        });
+
+        this.cartTotal = totalAmount;
+    }
+
+    private handleOnCartItemRemove(data: AmountEmitPayload): void {
+        const { productId } = data;
+        const orderId = <number>this.order.id;
+
+        const request: removeCartItemRequest = {
+            orderId,
+            productId
+        };
+
+        const thisCartItemComponent = <ComponentRef<CartItemComponent>>(
+            this.cartItemComponents.find((cmp) => cmp.instance._product.id === productId)
+        );
+
+        this.apiSvc.removeCartItem(request).subscribe((_) => {
+            alert("removed from cart!");
+            thisCartItemComponent.destroy();
+            this.cartTotal = this.calcCartTotal();
+            this.addStyleTotalAmount();
         });
     }
 
-    handleAmountEmitter(data: AmountEmitPayload): void {
-        const { cartComponent, productId, qty } = data;
-        const orderId = cartComponent?.order.id as number;
+    private handleOnCartItemQtyChanged(data: AmountEmitPayload): void {
+        const { productId, qty } = data;
+        const orderId = <number>this.order.id;
 
         const updateRequest: updatedCartItemRequest = {
             productId,
@@ -106,7 +169,34 @@ export class CartComponent implements OnInit, AfterViewInit {
             orderId
         };
 
-        cartComponent?.apiSvc.updateCartItem(updateRequest).subscribe();
+        this.apiSvc.updateCartItem(updateRequest).subscribe((_) => {
+            this.cartTotal = this.calcCartTotal();
+            this.addStyleTotalAmount();
+        });
+    }
+
+    private addStyleTotalAmount(preprocess?: boolean): void {
+        if (!preprocess) {
+            this._elemTotalContent.nativeElement.classList.remove("calc");
+            this._elemTotalXtra.nativeElement.innerText = "";
+            return;
+        }
+
+        this._elemTotalContent.nativeElement.classList.add("calc");
+        this._elemTotalXtra.nativeElement.innerText = "(calculating...)";
+    }
+
+    private calcCartTotal(): number {
+        let totalAmount = 0;
+
+        this.cartItemComponents.forEach((cartItemComponent) => {
+            const thisComponent = cartItemComponent.instance,
+                thisProductPrice = thisComponent._product.price / 100,
+                quantity = thisComponent._qty,
+                thisItemTotal = thisProductPrice * quantity;
+            totalAmount += thisItemTotal;
+        });
+        return totalAmount;
     }
 
     ngAfterViewInit() {
@@ -165,5 +255,4 @@ export class CartComponent implements OnInit, AfterViewInit {
 export type AmountEmitPayload = {
     productId: number;
     qty: number;
-    cartComponent?: CartComponent;
 };

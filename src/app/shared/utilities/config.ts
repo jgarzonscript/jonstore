@@ -94,7 +94,8 @@ class Routes {
         ["createOrder"]: ":API_URL/orders/:userId",
         ["addProduct"]: ":API_URL/orders/:orderId/products",
         ["productsInCart"]: ":API_URL/orders/:orderId/products",
-        ["updateCartItem"]: ":API_URL/orders/:orderId/products"
+        ["updateCartItem"]: ":API_URL/orders/:orderId/products",
+        ["removeCartItem"]: ":API_URL/orders/:id/products/:pid"
     };
 
     private USER_ROUTES = {
@@ -149,6 +150,15 @@ class Routes {
         return url;
     }
 
+    removeCartItem(request: removeCartItemRequest): string {
+        const options = Object.assign({}, this.options, {
+            id: request.orderId,
+            pid: request.productId
+        });
+        const url = this.replaceUrl(this.ORDER_ROUTES.removeCartItem, options);
+        return url;
+    }
+
     private replaceUrl(url: string, options: Options): string {
         var regex = new RegExp(":(" + Object.keys(options).join("|") + ")", "g");
 
@@ -195,6 +205,11 @@ export type updatedCartItemRequest = {
     productId: number;
     qty: number;
     orderId: number;
+};
+
+export type removeCartItemRequest = {
+    orderId: number;
+    productId: number;
 };
 
 export type apiOrderProductResponse = {
