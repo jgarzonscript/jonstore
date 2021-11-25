@@ -25,6 +25,7 @@ import {
     updatedCartItemRequest
 } from "../shared/utilities/config";
 import { Product } from "../shared/models/product.model";
+import { submitFormRequest } from "./client-form/client-form.component";
 
 @Component({
     selector: "cart-parent",
@@ -250,6 +251,13 @@ export class CartComponent implements OnInit, AfterViewInit {
                 (error) => console.log(`error fetching products; ${error}`)
             );
         });
+    }
+
+    onFormSubmit(request: submitFormRequest): void {
+        const orderId = this.order.id;
+        request.orderId = orderId;
+
+        this.apiSvc.closeOrder(request).subscribe((response) => console.log(response));
     }
 }
 

@@ -90,12 +90,14 @@ class Routes {
     private API_URL = "http://localhost:3000";
 
     private ORDER_ROUTES = {
-        ["orderByUser"]: ":API_URL/orderbyuser/:userId",
+        ["index"]: ":API_URL/orders/:userId",
         ["createOrder"]: ":API_URL/orders/:userId",
         ["addProduct"]: ":API_URL/orders/:orderId/products",
-        ["productsInCart"]: ":API_URL/orders/:orderId/products",
+        ["cartItems"]: ":API_URL/orders/:orderId/products",
         ["updateCartItem"]: ":API_URL/orders/:orderId/products",
-        ["removeCartItem"]: ":API_URL/orders/:id/products/:pid"
+        ["removeCartItem"]: ":API_URL/orders/:id/products/:pid",
+        ["closeOrder"]: ":API_URL/orders/:id",
+        ["createShipping"]: ":API_URL/orders/:id/shipping"
     };
 
     private USER_ROUTES = {
@@ -120,9 +122,9 @@ class Routes {
         return url;
     }
 
-    orderByUser(userId: number): string {
+    orders(userId: number): string {
         const options = Object.assign({}, this.options, { userId });
-        const url = this.replaceUrl(this.ORDER_ROUTES.orderByUser, options);
+        const url = this.replaceUrl(this.ORDER_ROUTES.index, options);
         return url;
     }
 
@@ -138,9 +140,9 @@ class Routes {
         return url;
     }
 
-    productsInCart(orderId: number): string {
+    cartItems(orderId: number): string {
         const options = Object.assign({}, this.options, { orderId });
-        const url = this.replaceUrl(this.ORDER_ROUTES.productsInCart, options);
+        const url = this.replaceUrl(this.ORDER_ROUTES.cartItems, options);
         return url;
     }
 
@@ -156,6 +158,20 @@ class Routes {
             pid: request.productId
         });
         const url = this.replaceUrl(this.ORDER_ROUTES.removeCartItem, options);
+        return url;
+    }
+
+    // oe = order endpoint
+    oeCloseOrder(orderId: number): string {
+        const options = Object.assign({}, this.options, { id: orderId });
+        const url = this.replaceUrl(this.ORDER_ROUTES.closeOrder, options);
+        return url;
+    }
+
+    // order endpoint
+    oeCreateShipping(orderId: number): string {
+        const options = Object.assign({}, this.options, { id: orderId });
+        const url = this.replaceUrl(this.ORDER_ROUTES.createShipping, options);
         return url;
     }
 

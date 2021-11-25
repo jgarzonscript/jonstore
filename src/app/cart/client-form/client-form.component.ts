@@ -5,7 +5,9 @@ import {
     TemplateRef,
     ViewChild,
     AfterViewInit,
-    Input
+    Input,
+    Output,
+    EventEmitter
 } from "@angular/core";
 
 import {
@@ -32,12 +34,11 @@ import { HelperTextComponent } from "../helper-text/helper-text.component";
 export class ClientFormComponent implements OnInit {
     profileForm!: FormGroup;
 
-    @Input() cartItemsCount: number = 0;
+    @Input()
+    cartItemsCount: number = 0;
 
-    // template!: TemplateRef<HTMLElement> | null;
-    // @ViewChild("req", { static: true }) reqTemplate!: TemplateRef<HTMLElement>;
-    // @ViewChild("helperWindow") helperWindow!: ElementRef<HTMLElement>; // formely called helperDiv
-    // @ViewChild("HelperContent") helperContentDiv!: ElementRef<HTMLElement>;
+    @Output()
+    submitEvent = new EventEmitter<submitFormRequest>();
 
     constructor(private fb: FormBuilder) {}
 
@@ -170,9 +171,28 @@ export class ClientFormComponent implements OnInit {
         openElement.classList.add(classList[isValid ? "true" : "false"]);
         // console.log(JSON.stringify(validationResponse));
     }
+
+    onSubmit(): void {
+        const formValues = this.profileForm.value,
+            fullName = formValues["fullName"],
+            address = formValues["address"];
+
+        const request: submitFormRequest = {
+            fullName,
+            address
+        };
+
+        this.submitEvent.emit(request);
+    }
 }
 
 export type OnValidateResponse = {
     source: string;
     valid: boolean;
+};
+
+export type submitFormRequest = {
+    orderId?: number;
+    fullName: string;
+    address: string;
 };

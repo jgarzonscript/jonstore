@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, of, throwError, BehaviorSubject, NEVER } from "rxjs";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { map, tap, catchError } from "rxjs/operators";
+import { map, tap, catchError, filter, switchMap } from "rxjs/operators";
 
 import { Product } from "../models/product.model";
 import { Auth } from "./auth";
@@ -17,6 +17,7 @@ import {
     removeCartItemRequest
 } from "../utilities/config";
 import { SharedDataService } from "./shared-data.service";
+import { submitFormRequest } from "src/app/cart/client-form/client-form.component";
 
 @Injectable({
     providedIn: "root"
@@ -69,7 +70,7 @@ export class HttpService {
 
     getActiveOrder(userId: number): Observable<Order> {
         return this.http
-            .get<apiResponse>(this.config.routes.orderByUser(userId), {
+            .get<apiResponse>(this.config.routes.orders(userId), {
                 headers: this.auth.getAuthorizationHeader()
             })
             .pipe(
@@ -126,15 +127,11 @@ export class HttpService {
      * Cart Items for a specific order
      */
     getProductsInCart(orderId: number): Observable<OrderProduct[]> {
-        return this.http
-            .get<apiResponse>(this.config.routes.productsInCart(orderId))
-            .pipe(
-                map((response) =>
-                    this.config.serializeProductsInCart_ORDER(response.data)
-                ),
-                tap((cartItems) => this.sharedService.sendCartItems(cartItems)),
-                catchError(this.handleError)
-            );
+        return this.http.get<apiResponse>(this.config.routes.cartItems(orderId)).pipe(
+            map((response) => this.config.serializeProductsInCart_ORDER(response.data)),
+            tap((cartItems) => this.sharedService.sendCartItems(cartItems)),
+            catchError(this.handleError)
+        );
     }
 
     updateCartItem(updatedCartItemRequest: updatedCartItemRequest): Observable<boolean> {
@@ -166,5 +163,33 @@ export class HttpService {
                 tap((_) => this.sharedService.removeCartItem(productId)),
                 catchError(this.handleError)
             );
+    }
+
+    closeOrder(request: submitFormRequest): Observable<string> {
+        const { orderId } = request,
+            closeOrderRoute = this.config.routes.oeCloseOrder(<number>orderId),
+            authHeader = this.auth.getAuthorizationHeader();
+
+        return this.http
+            .delete<apiResponse>(closeOrderRoute, {
+                headers: authHeader
+            })
+            .pipe(
+                // map((response) => <string>response.message),
+                switchMap((_) => this.createShipping(request)),
+                catchError(this.handleError)
+            );
+    }
+
+    private createShipping(request: submitFormRequest): Observable<string> {
+        const { orderId } = request,
+            createShippingRoute = this.config.routes.oeCreateShipping(<number>orderId),
+            authHeader = this.auth.getAuthorizationHeader();
+
+        return this.http
+            .post<apiResponse>(createShippingRoute, request, {
+                headers: authHeader
+            })
+            .pipe(map((response) => <string>response.message + " [createShipping]"));
     }
 }

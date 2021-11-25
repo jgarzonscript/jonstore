@@ -2,7 +2,7 @@
     <!--
         #f="ngForm    
     -->
-    <form [formGroup]="profileForm">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
         <!-- FULLNAME -->
         <div class="mb-3">
             <label for="fullname" class="form-label">Full name</label>
