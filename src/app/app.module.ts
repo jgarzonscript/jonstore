@@ -25,6 +25,7 @@ import { ClientFormComponent } from "./cart/client-form/client-form.component";
 import { HelperTextComponent } from "./cart/helper-text/helper-text.component";
 
 import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
+import { ConfirmationComponent } from './cart/confirmation/confirmation.component';
 
 @NgModule({
     declarations: [
@@ -38,7 +39,8 @@ import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
         CartItemComponent,
         ClientFormComponent,
         // CartformvalidatorDirective,
-        HelperTextComponent
+        HelperTextComponent,
+        ConfirmationComponent
     ],
     imports: [
         BrowserModule,

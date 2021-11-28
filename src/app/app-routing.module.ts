@@ -4,6 +4,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { LoginPageComponent } from "./login-page/login-page.component";
 import { ProductsComponent } from "./products/products.component";
 import { CartComponent } from "./cart/cart.component";
+import { ConfirmationComponent } from "./cart/confirmation/confirmation.component";
 
 const routes: Routes = [
     { path: "", component: ProductsComponent },
@@ -20,7 +21,15 @@ const routes: Routes = [
     {
         path: "cart",
         component: CartComponent
+    },
+    {
+        path: "confirmation/:name/:total",
+        component: ConfirmationComponent
     }
+    // {
+    //     path: "confirmation",
+    //     component: ConfirmationComponent
+    // }
 ];
 
 @NgModule({

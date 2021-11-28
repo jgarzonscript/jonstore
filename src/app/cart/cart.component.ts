@@ -26,6 +26,7 @@ import {
 } from "../shared/utilities/config";
 import { Product } from "../shared/models/product.model";
 import { submitFormRequest } from "./client-form/client-form.component";
+import { Router } from "@angular/router";
 
 @Component({
     selector: "cart-parent",
@@ -55,7 +56,8 @@ export class CartComponent implements OnInit, AfterViewInit {
         private resolver: ComponentFactoryResolver,
         private cd: ChangeDetectorRef,
         private _user: User,
-        private apiSvc: HttpService
+        private apiSvc: HttpService,
+        private router: Router
     ) {
         this.isLoggedIn = _user.isLoggedIn;
     }
@@ -254,10 +256,19 @@ export class CartComponent implements OnInit, AfterViewInit {
     }
 
     onFormSubmit(request: submitFormRequest): void {
-        const orderId = this.order.id;
+        const orderId = this.order.id,
+            fullName = request.fullName;
         request.orderId = orderId;
 
-        this.apiSvc.closeOrder(request).subscribe((response) => console.log(response));
+        this.apiSvc
+            .closeOrder(request)
+            .subscribe((response) => this.confirmation(fullName));
+    }
+
+    private confirmation(fullName: string): void {
+        this.router.navigate(["/confirmation", fullName, this.cartTotal], {
+            skipLocationChange: true
+        });
     }
 }
 

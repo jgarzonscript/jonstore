@@ -1,0 +1,31 @@
+#cContainer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: calc(100vh - 100px);
+    /* background-color: aliceblue; */
+}
+
+#cContent {
+    height: 200px;
+    width: 500px;
+    background: white;
+    margin-top: 100px;
+
+    border-radius: 10px;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+h2 {
+    color: #33e5bc;
+    /* margin-bottom: 2rem; */
+}
+
+#cContent * {
+    margin-bottom: 1.5rem;
+}
