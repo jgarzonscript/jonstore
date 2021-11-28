@@ -175,7 +175,7 @@ export class HttpService {
                 headers: authHeader
             })
             .pipe(
-                // map((response) => <string>response.message),
+                tap((_) => this.sharedService.clearCart()),
                 switchMap((_) => this.createShipping(request)),
                 catchError(this.handleError)
             );

@@ -32,4 +32,8 @@ export class SharedDataService {
             this.cartItemsBS.next(filtered);
         });
     }
+
+    clearCart(): void {
+        this.cartItemsBS.next([]);
+    }
 }
