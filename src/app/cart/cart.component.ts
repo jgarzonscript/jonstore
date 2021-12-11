@@ -239,7 +239,7 @@ export class CartComponent implements OnInit, AfterViewInit {
 
     private initCartItems(orderId: number): Observable<OrderProduct[]> {
         return new Observable((observer) => {
-            this.apiSvc.getProductsInCart(orderId).subscribe(
+            this.apiSvc.getCartItems(orderId).subscribe(
                 (cartItems) => observer.next(cartItems),
                 (error) => console.log(`error fetching cart-items; ${error}`)
             );

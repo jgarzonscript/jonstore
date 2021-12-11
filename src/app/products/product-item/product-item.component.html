@@ -1,4 +1,4 @@
-<div class="jgimg">
+<div class="jgimg" (click)="imgClickedEvent.emit(product.id)">
     <img src="{{ product.url }}" alt="" class="product-image" />
     <div class="jgImgAdded" [ngClass]="{ show: imgModAdded === 1 }">
         <div class="jgImageAddedBody">

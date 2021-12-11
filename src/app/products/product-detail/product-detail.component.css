@@ -1,0 +1,87 @@
+#pdContainer {
+    /* height: calc(100vh - 100px); */
+    min-height: calc(100vh - 100px);
+    /* background-color: cornsilk; */
+    display: flex;
+    justify-content: center;
+}
+
+#pdContent {
+    height: fit-content;
+    /* width: 60vw; */
+    width: fit-content;
+    background: white;
+    margin-top: 60px;
+
+    border-radius: 10px;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    /* align-items: center; */
+    margin-bottom: 35px;
+}
+
+img {
+    width: 320px;
+    border-radius: 10px;
+}
+
+/* #pdImage {
+
+} */
+
+#pdWindow {
+    /* flex-grow: 1; */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 25px;
+}
+
+#pdWTop {
+    align-self: flex-start;
+    flex-grow: 1;
+    padding: 20px;
+}
+
+#pdWTop > div {
+    font-style: italic;
+    cursor: pointer;
+}
+
+#pdInv {
+    /* align-self: flex-start; */
+    flex-grow: 1;
+    /* visibility: hidden; */
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 20px;
+}
+
+#pdWC {
+    width: 100%;
+
+    /* border: 1px solid chocolate; */
+    border-radius: 10px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#pdWC div {
+    margin-bottom: 1rem;
+}
+
+#qty {
+    width: max-content;
+}
+
+a:hover {
+    text-decoration: none;
+}

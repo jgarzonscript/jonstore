@@ -11,7 +11,7 @@ import {
     apiResponse,
     apiUser,
     Order,
-    addProductRequest,
+    addToCartRequest,
     OrderProduct,
     updatedCartItemRequest,
     removeCartItemRequest
@@ -31,13 +31,24 @@ export class HttpService {
     ) {}
 
     private handleError(error: HttpErrorResponse) {
-        console.error(`Backend returned code ${error.status}, body was: `, error.error);
-        return throwError(error.error.message);
+        const status = error?.status ? error.status : "<no code defined>";
+        console.error(`Backend returned code ${status}, body was: `, error);
+        return throwError(error.message);
     }
 
     getProducts(): Observable<Product[]> {
         return this.http.get<apiResponse>(this.config.routes.allProducts()).pipe(
             map((response) => this.config.serializeAllProducts(response.data)),
+            catchError(this.handleError)
+        );
+    }
+
+    getProduct(id: number): Observable<Product> {
+        const getProductRoute = this.config.routes.peIndexId(id),
+            serialize = this.config.serializeProduct.bind(this.config);
+
+        return this.http.get<apiResponse>(getProductRoute).pipe(
+            map((response) => serialize(response.data)),
             catchError(this.handleError)
         );
     }
@@ -107,46 +118,42 @@ export class HttpService {
      *
      * Add item to cart
      */
-    addProductToOrder(
-        orderId: number,
-        _addProductRequest: addProductRequest
-    ): Observable<OrderProduct> {
-        return this.http
-            .post<apiResponse>(this.config.routes.addProduct(orderId), _addProductRequest)
-            .pipe(
-                map((response) =>
-                    this.config.serializeSingleProductInCart_ORDER(response.data)
-                ),
-                tap((cartItem) => this.sharedService.addCartItem(cartItem)),
-                catchError(this.handleError)
-            );
+    addToCart(_addProductRequest: addToCartRequest): Observable<OrderProduct> {
+        const { orderId } = _addProductRequest,
+            addToCartRoute = this.config.routes.addProduct(<number>orderId),
+            serialize = this.config.serializeSingleProductInCart_ORDER.bind(this.config);
+
+        return this.http.post<apiResponse>(addToCartRoute, _addProductRequest).pipe(
+            map((response) => serialize(response.data)),
+            tap((cartItem) => this.sharedService.addCartItem(cartItem)),
+            catchError(this.handleError)
+        );
     }
 
     /**
      *
      * Cart Items for a specific order
      */
-    getProductsInCart(orderId: number): Observable<OrderProduct[]> {
-        return this.http.get<apiResponse>(this.config.routes.cartItems(orderId)).pipe(
-            map((response) => this.config.serializeProductsInCart_ORDER(response.data)),
+    getCartItems(orderId: number): Observable<OrderProduct[]> {
+        const getCartItemsRoute = this.config.routes.cartItems(orderId),
+            serialize = this.config.serializeCartItems.bind(this.config);
+
+        return this.http.get<apiResponse>(getCartItemsRoute).pipe(
+            map((response) => serialize(response.data)),
             tap((cartItems) => this.sharedService.sendCartItems(cartItems)),
             catchError(this.handleError)
         );
     }
 
-    updateCartItem(updatedCartItemRequest: updatedCartItemRequest): Observable<boolean> {
-        return this.http
-            .patch<apiResponse>(
-                this.config.routes.updateCartItem(updatedCartItemRequest.orderId),
-                updatedCartItemRequest,
-                {
-                    headers: this.auth.getAuthorizationHeader()
-                }
-            )
-            .pipe(
-                map((response) => !!response.data),
-                catchError(this.handleError)
-            );
+    updateCartItem(body: updatedCartItemRequest): Observable<boolean> {
+        const { orderId } = body,
+            updateCartItemRoute = this.config.routes.updateCartItem(orderId),
+            headers = { headers: this.auth.getAuthorizationHeader() };
+
+        return this.http.patch<apiResponse>(updateCartItemRoute, body, headers).pipe(
+            map((response) => !!response.data),
+            catchError(this.handleError)
+        );
     }
 
     removeCartItem(removeCartItemRequest: removeCartItemRequest): Observable<boolean> {

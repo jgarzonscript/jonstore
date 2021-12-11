@@ -12,6 +12,7 @@ export class ProductItemComponent implements OnInit {
     @Input() product!: Product;
     @Output() addProduct = new EventEmitter<any>();
     @Input("cart") productsInCart!: OrderProduct[];
+    @Output() imgClickedEvent = new EventEmitter<number>();
 
     data: number[] = [1, 2, 3, 4, 5, 6];
     quantitySelected: number = 1;

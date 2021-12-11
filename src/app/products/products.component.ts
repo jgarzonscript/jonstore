@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ViewChildren, QueryList } from "@angular/
 import { Product } from "../shared/models/product.model";
 import { HttpService } from "../shared/services/http.service";
 import { Router } from "@angular/router";
-import { addProductRequest, Order, OrderProduct } from "../shared/utilities/config";
+import { addToCartRequest, Order, OrderProduct } from "../shared/utilities/config";
 import { User } from "../shared/models/user.model";
 import { Observable, zip } from "rxjs";
 
@@ -62,12 +62,10 @@ export class ProductsComponent implements OnInit {
                     this.order = order; // #4
 
                     // #2 -- fetch products in Cart
-                    this.http
-                        .getProductsInCart(this.order.id)
-                        .subscribe((productsInCart) => {
-                            this.productsInCart = productsInCart; // #4
-                            resolve(true);
-                        });
+                    this.http.getCartItems(this.order.id).subscribe((productsInCart) => {
+                        this.productsInCart = productsInCart; // #4
+                        resolve(true);
+                    });
 
                     /* TO-DO 10/23: 
                         Code in logic for when getProductsByOrder() fails
@@ -126,19 +124,30 @@ export class ProductsComponent implements OnInit {
             return;
         }
 
-        const addProductRequest: addProductRequest = {
-            product_id: productId,
-            quantity: qty
+        const addProductRequest: addToCartRequest = {
+            orderId: this.order.id,
+            productId,
+            qty
         };
 
-        this.http
-            .addProductToOrder(this.order.id, addProductRequest)
-            .subscribe((cartItem) => {
-                const thisComponent = this.productComponents.find(
-                    (thisComponent) => thisComponent.product.id === cartItem.productId
-                );
+        this.http.addToCart(addProductRequest).subscribe((cartItem) => {
+            const thisComponent = this.productComponents.find(
+                (thisComponent) => thisComponent.product.id === cartItem.productId
+            );
 
-                thisComponent?.initImgLabel(cartItem);
-            });
+            thisComponent?.initImgLabel(cartItem);
+        });
+    }
+
+    onImgClicked(productid: number): void {
+        const log = console.log.bind(this),
+            isSignedIn = this.user.isLoggedIn,
+            params = isSignedIn
+                ? {
+                      queryParams: { orderid: this.order.id }
+                  }
+                : undefined;
+
+        this.router.navigate(["/productdetail", productid], params);
     }
 }

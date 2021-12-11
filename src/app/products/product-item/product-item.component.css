@@ -18,6 +18,9 @@ img.product-image {
 .jgimg {
     position: relative;
 }
+.jgimg:hover {
+    cursor: pointer;
+}
 
 .jgimg .jgImgAdded {
     position: absolute;

@@ -28,7 +28,7 @@ const routes: Routes = [
         component: ConfirmationComponent
     },
     {
-        path: "detail",
+        path: "productdetail/:id",
         component: ProductDetailComponent
     }
 ];

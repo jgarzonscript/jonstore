@@ -1,1 +1,57 @@
-<p>product-detail works!</p>
+<div id="pdContainer">
+    <div id="pdContent">
+        <div id="pdImage">
+            <img src="{{ product?.url }}" alt="" />
+        </div>
+        <div id="pdWindow">
+            <!-- top div -->
+            <div id="pdWTop">
+                <div *ngIf="cartItem" class="text-muted"># this item is in your cart</div>
+            </div>
+
+            <!-- center div -->
+            <div id="pdWC">
+                <h3>{{ product?.name }}</h3>
+                <p>{{ product ? (product.price / 100 | currency) : "" }}</p>
+                <p>{{ product?.description }}</p>
+                <div id="qty">
+                    <select #qty name="qantity" [(ngModel)]="_qty" class="form-select">
+                        <option value="0" selected>quantity</option>
+                        <option *ngFor="let i of [1, 2, 3, 4, 5, 6]">
+                            {{ i }}
+                        </option>
+                    </select>
+                </div>
+                <div>
+                    <button
+                        *ngIf="!cartItem; else update"
+                        type="button"
+                        class="btn btn-primary"
+                        (click)="onAddToCart(qty.value)"
+                        [disabled]="qty.value === '0'"
+                    >
+                        add to cart
+                    </button>
+                    <ng-template #update>
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            (click)="onUpdate(qty.value)"
+                            [disabled]="qty.value === '0'"
+                        >
+                            update
+                        </button>
+                    </ng-template>
+                </div>
+                <a href="{{ null }}" routerLink="/">← back to product list</a>
+            </div>
+
+            <div id="pdInv">
+                <p [pdSaved]="onSave" [pdMessage]="pdMessage">saved!</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div>
+    {{ product?.name }}
+</div> -->

@@ -24,6 +24,17 @@ export class Config {
             .filter((prod) => prod.url?.length);
     }
 
+    serializeProduct(product: apiProduct): Product {
+        return new Product(
+            product["name"],
+            product["price"],
+            product["url"],
+            product["description"],
+            product["category_id"],
+            product["id"]
+        );
+    }
+
     serializeOrder(data: { id: number; user_id: string; status: string }): Order {
         const order: Order = {
             id: data["id"],
@@ -33,7 +44,8 @@ export class Config {
         return order;
     }
 
-    serializeProductsInCart_ORDER(data: apiOrderProductResponse[]): OrderProduct[] {
+    // orders endpoint
+    serializeCartItems(data: apiOrderProductResponse[]): OrderProduct[] {
         /*
     // identify any duplicate products */
         const duplicates = (function () {
@@ -89,6 +101,7 @@ export class Config {
 class Routes {
     private API_URL = "http://localhost:3000";
 
+    // add your 'order' routes here
     private ORDER_ROUTES = {
         ["index"]: ":API_URL/orders/:userId",
         ["createOrder"]: ":API_URL/orders/:userId",
@@ -100,12 +113,15 @@ class Routes {
         ["createShipping"]: ":API_URL/orders/:id/shipping"
     };
 
+    // add your 'user' routes here
     private USER_ROUTES = {
         ["authenticate"]: ":API_URL/users/authenticate"
     };
 
+    // add your product routes here
     private PRODUCT_ROUTES = {
-        ["allProducts"]: ":API_URL/products"
+        ["allProducts"]: ":API_URL/products",
+        ["indexId"]: ":API_URL/products/:id"
     };
 
     private options: Options = {
@@ -114,6 +130,13 @@ class Routes {
 
     allProducts(): string {
         const url = this.replaceUrl(this.PRODUCT_ROUTES.allProducts, this.options);
+        return url;
+    }
+
+    // product endoint
+    peIndexId(id: number): string {
+        const options = Object.assign({}, this.options, { id });
+        const url = this.replaceUrl(this.PRODUCT_ROUTES.indexId, options);
         return url;
     }
 
@@ -140,6 +163,7 @@ class Routes {
         return url;
     }
 
+    // orders endpoint
     cartItems(orderId: number): string {
         const options = Object.assign({}, this.options, { orderId });
         const url = this.replaceUrl(this.ORDER_ROUTES.cartItems, options);
@@ -212,9 +236,10 @@ export type Order = {
     status: string;
 };
 
-export type addProductRequest = {
-    product_id: number;
-    quantity: number;
+export type addToCartRequest = {
+    orderId?: number;
+    productId: number;
+    qty: number;
 };
 
 export type updatedCartItemRequest = {

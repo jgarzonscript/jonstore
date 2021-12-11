@@ -27,6 +27,7 @@ import { HelperTextComponent } from "./cart/helper-text/helper-text.component";
 import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
 import { ConfirmationComponent } from './cart/confirmation/confirmation.component';
 import { ProductDetailComponent } from './products/product-detail/product-detail.component';
+import { SavedDirective } from './products/product-detail/saved.directive';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { ProductDetailComponent } from './products/product-detail/product-detail
         // CartformvalidatorDirective,
         HelperTextComponent,
         ConfirmationComponent,
-        ProductDetailComponent
+        ProductDetailComponent,
+        SavedDirective
     ],
     imports: [
         BrowserModule,
