@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+    production: true,
+    DATABASE_URL: "https://jonstoreapi.herokuapp.com"
 };

@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { environment } from "src/environments/environment";
 import { apiProduct, Product } from "../models/product.model";
 
 @Injectable()
@@ -99,7 +100,7 @@ export class Config {
 }
 
 class Routes {
-    private API_URL = "http://localhost:3000";
+    private API_URL = environment.DATABASE_URL;
 
     // add your 'order' routes here
     private ORDER_ROUTES = {
