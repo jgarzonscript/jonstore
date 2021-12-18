@@ -1,27 +1,31 @@
-# AppStore
+# Angular Frontend - JonStore Project;
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.2.
+This storefront website is an e-commerce site.
 
-## Development server
+An angular-built website based on the functionality of an e-commerce site. The following has been developed from the ground up to demonstrate a proof of concept functioning e-commerce site, with the ability to:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+-   add products to a cart
+-   sign in as a user
+-   modify the cart items
+-   remove/add the quantity of each product
+-   submit an order and receive a confirmation
 
-## Code scaffolding
+## Getting Started
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Step 1: Install your modules and dependencies
 
-## Build
+```
+npm install
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Step 2: Start your server
 
-## Running unit tests
+```
+ng serve
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+<br>
 
-## Running end-to-end tests
+### Other notes
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+the server.js file can be disregarded.
